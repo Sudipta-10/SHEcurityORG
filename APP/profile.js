@@ -83,3 +83,13 @@ function addContact() {
     alert("Please enter both name and number.");
   }
 }
+
+// Add this after the existing event listeners
+document.getElementById("logoutBtn").addEventListener("click", function () {
+  // Clear authentication token
+  localStorage.removeItem("authToken");
+  // Clear profile picture
+  localStorage.removeItem(`profilePic_${getUserId()}`);
+  // Redirect to login page
+  window.location.href = "login.html";
+});
