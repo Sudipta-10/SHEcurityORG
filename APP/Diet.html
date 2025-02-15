@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Pregnancy Diet Calculator</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #fff0f3 0%, #ffd1dc 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(255, 182, 193, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        h2 {
+            color: #d94a8c;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 2.2em;
+            font-weight: 700;
+            text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+        }
+
+        .input-section {
+            margin-bottom: 30px;
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ffe4e8;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #ffb6c1;
+            box-shadow: 0 0 0 3px rgba(255,182,193,0.2);
+        }
+
+        button {
+            background: linear-gradient(45deg, #ff69b4, #ff8da1);
+            color: white;
+            padding: 14px 28px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255,105,180,0.3);
+        }
+
+        .result {
+            margin-top: 30px;
+            padding: 25px;
+            border-radius: 15px;
+            display: none;
+            background: white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .meal {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #fff9fa;
+            border-radius: 12px;
+            border-left: 5px solid #ffb6c1;
+            transition: transform 0.2s ease;
+        }
+
+        .meal:hover {
+            transform: translateX(5px);
+        }
+
+        .meal h4 {
+            color: #d94a8c;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .warning {
+            color: #ff4757;
+            font-weight: bold;
+            margin-top: 15px;
+            padding: 15px;
+            background: #fff0f3;
+            border-radius: 10px;
+            border-left: 5px solid #ff4757;
+        }
+
+        .trimester-info {
+            margin-top: 25px;
+            padding: 20px;
+            background: #fff9fa;
+            border-radius: 12px;
+            border: 2px solid #ffe4e8;
+        }
+
+        .trimester-info h3 {
+            color: #d94a8c;
+            margin-top: 0;
+        }
+
+        .trimester-info ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .trimester-info ul li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .trimester-info ul li:before {
+            content: "•";
+            color: #ffb6c1;
+            font-size: 1.5em;
+            position: absolute;
+            left: 0;
+            top: -5px;
+        }
+
+        .meal ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .meal ul li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .meal ul li:before {
+            content: "🍽️";
+            position: absolute;
+            left: 0;
+            top: -2px;
+        }
+
+        #calories {
+            text-align: center;
+            margin: 20px 0;
+            padding: 15px;
+            background: linear-gradient(45deg, #ffe4e8, #fff0f3);
+            border-radius: 10px;
+        }
+
+        #calories h3 {
+            color: #d94a8c;
+            margin: 0;
+            font-size: 1.3em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pregnancy Diet Calculator</h2>
+        
+        <div class="input-section">
+            <div class="input-group">
+                <label for="weight">Current Weight (kg):</label>
+                <input type="number" id="weight" required min="30" max="200" placeholder="Enter your weight">
+            </div>
+
+            <div class="input-group">
+                <label for="systolic">Systolic Blood Pressure (mmHg):</label>
+                <input type="number" id="systolic" required min="70" max="200" placeholder="Enter systolic pressure">
+            </div>
+
+            <div class="input-group">
+                <label for="diastolic">Diastolic Blood Pressure (mmHg):</label>
+                <input type="number" id="diastolic" required min="40" max="120" placeholder="Enter diastolic pressure">
+            </div>
+
+            <div class="input-group">
+                <label for="trimester">Trimester:</label>
+                <select id="trimester">
+                    <option value="1">First Trimester</option>
+                    <option value="2">Second Trimester</option>
+                    <option value="3">Third Trimester</option>
+                </select>
+            </div>
+
+            <button onclick="calculateDiet()">Generate Your Diet Plan</button>
+        </div>
+
+        <div id="result" class="result">
+            <div id="warning"></div>
+            <div id="calories"></div>
+            <div id="dietPlan" class="diet-plan"></div>
+            <div id="trimesterInfo" class="trimester-info"></div>
+        </div>
+    </div>
+
+    <script>
+        function calculateDiet() {
+            const weight = parseFloat(document.getElementById('weight').value);
+            const systolic = parseInt(document.getElementById('systolic').value);
+            const diastolic = parseInt(document.getElementById('diastolic').value);
+            const trimester = parseInt(document.getElementById('trimester').value);
+            const resultDiv = document.getElementById('result');
+            const warningDiv = document.getElementById('warning');
+            const caloriesDiv = document.getElementById('calories');
+            const dietPlanDiv = document.getElementById('dietPlan');
+            const trimesterInfoDiv = document.getElementById('trimesterInfo');
+
+            // Clear previous results
+            warningDiv.innerHTML = '';
+            resultDiv.style.display = 'block';
+
+            // Check for high blood pressure
+            if (systolic >= 140 || diastolic >= 90) {
+                warningDiv.innerHTML = `
+                    <div class="warning">
+                        ⚠️ Your blood pressure readings indicate potential hypertension. 
+                        Please consult your healthcare provider immediately.
+                    </div>
+                `;
+            }
+
+            // Calculate base calories
+            let baseCalories = 0;
+            switch(trimester) {
+                case 1:
+                    baseCalories = weight * 35;
+                    break;
+                case 2:
+                    baseCalories = weight * 40;
+                    break;
+                case 3:
+                    baseCalories = weight * 45;
+                    break;
+            }
+
+            caloriesDiv.innerHTML = `
+                <h3>✨ Daily Caloric Needs: ${baseCalories.toFixed(0)} calories ✨</h3>
+            `;
+
+            // Generate diet plan
+            const dietPlan = generateDietPlan(baseCalories, trimester);
+            dietPlanDiv.innerHTML = dietPlan;
+
+            // Add trimester-specific information
+            trimesterInfoDiv.innerHTML = getTrimesterInfo(trimester);
+        }
+
+        function generateDietPlan(calories, trimester) {
+            let html = '<h3>Your Personalized Daily Meal Plan</h3>';
+            
+            // Breakfast (25% of calories)
+            const breakfastCal = calories * 0.25;
+            html += `
+                <div class="meal">
+                    <h4>🌅 Breakfast (${breakfastCal.toFixed(0)} calories)</h4>
+                    <ul>
+                        <li>1 bowl of oatmeal with fresh berries</li>
+                        <li>1 glass of calcium-fortified milk</li>
+                        <li>2 organic boiled eggs</li>
+                        <li>1 slice of whole grain toast with avocado</li>
+                    </ul>
+                </div>
+            `;
+
+            // Mid-morning snack (10% of calories)
+            const snack1Cal = calories * 0.1;
+            html += `
+                <div class="meal">
+                    <h4>🥜 Mid-morning Snack (${snack1Cal.toFixed(0)} calories)</h4>
+                    <ul>
+                        <li>A handful of mixed nuts (almonds, walnuts)</li>
+                        <li>1 fresh apple or seasonal fruit</li>
+                        <li>Greek yogurt with honey</li>
+                    </ul>
+                </div>
+            `;
+
+            // Lunch (30% of calories)
+            const lunchCal = calories * 0.3;
+            html += `
+                <div class="meal">
+                    <h4>🍽️ Lunch (${lunchCal.toFixed(0)} calories)</h4>
+                    <ul>
+                        <li>1 cup of brown rice or quinoa</li>
+                        <li>Grilled fish/chicken or lentils</li>
+                        <li>Steamed seasonal vegetables</li>
+                        <li>Mixed salad with olive oil dressing</li>
+                    </ul>
+                </div>
+            `;
+
+            // Evening snack (10% of calories)
+            const snack2Cal = calories * 0.1;
+            html += `
+                <div class="meal">
+                    <h4>🥗 Evening Snack (${snack2Cal.toFixed(0)} calories)</h4>
+                    <ul>
+                        <li>Fresh fruit smoothie</li>
+                        <li>Mixed sprouts salad</li>
+                        <li>Whole grain crackers</li>
+                    </ul>
+                </div>
+            `;
+
+            // Dinner (25% of calories)
+            const dinnerCal = calories * 0.25;
+            html += `
+                <div class="meal">
+                    <h4>🌙 Dinner (${dinnerCal.toFixed(0)} calories)</h4>
+                    <ul>
+                        <li>2 whole grain chapatis or quinoa</li>
+                        <li>Mixed lentil dal or bean soup</li>
+                        <li>Sautéed vegetables with herbs</li>
+                        <li>Warm milk with turmeric</li>
+                    </ul>
+                </div>
+            `;
+
+            return html;
+        }
+
+        function getTrimesterInfo(trimester) {
+            let info = '';
+            switch(trimester) {
+                case 1:
+                    info = `
+                        <h3>✨ First Trimester Nutrition Tips</h3>
+                        <ul>
+                            <li>Focus on folate-rich foods like spinach and citrus fruits</li>
+                            <li>Eat small, frequent meals to manage morning sickness</li>
+                            <li>Stay hydrated with water and fresh coconut water</li>
+                            <li>Take prescribed prenatal vitamins regularly</li>
+                        </ul>
+                    `;
+                    break;
+                case 2:
+                    info = `
+                        <h3>✨ Second Trimester Nutrition Tips</h3>
+                        <ul>
+                            <li>Increase calcium intake with dairy and leafy greens</li>
+                            <li>Add iron-rich foods like lean meats and spinach</li>
+                            <li>Include more protein for baby's growth</li>
+                            <li>Maintain regular meal times for stable blood sugar</li>
+                        </ul>
+                    `;
+                    break;
+                case 3:
+                    info = `
+                        <h3>✨ Third Trimester Nutrition Tips</h3>
+                        <ul>
+                            <li>Eat smaller, more frequent nutrient-dense meals</li>
+                            <li>Focus on foods rich in omega-3 fatty acids</li>
+                            <li>Include fiber-rich foods for digestive health</li>
+                            <li>Stay well-hydrated with water and healthy fluids</li>
+                        </ul>
+                    `;
+                    break;
+            }
+            return info;
+        }
+    </script>
+</body>
+</html>
