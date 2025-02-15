@@ -22,21 +22,22 @@
         <header>
             <nav class="top-nav">
                 <ul>
-                    <li><a href="profile.html"><i class="fas fa-user-circle"></i> Profile</a></li>
-                        <ul>
-    </div>
-    <div class="emergency-contact">
-        <i class="fas fa-phone"></i>
-        <span>Emergency: 112</span>
-    </div>
-    </nav>
-    <div class="header-content">
-        <h1>
-            <i class="fas fa-shield-heart"></i>
-            SHEcurity
-        </h1>
-        <p class="tagline">Your personal guardian for safety and well-being</p>
-    </div>
+                    <li><a href="profile.html"><i class="fas fa-user-circle"></i> <span id="navUsername">Profile</span></a></li>
+                </ul>
+            </nav>
+            <div class="emergency-contact">
+                <i class="fas fa-phone"></i>
+                <span>Emergency: 112</span>
+            </div>
+        </header>
+
+        <div class="header-content">
+            <h1>
+                <i class="fas fa-shield-heart"></i>
+                SHEcurity
+            </h1>
+            <p class="tagline">Your personal guardian for safety and well-being</p>
+        </div>
     </header>
 
     <main>
@@ -107,6 +108,30 @@
         </button>
     </div>
     </div>
+
+    <script type="module">
+        document.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('authToken');
+            if (token) {
+                try {
+                    const userData = JSON.parse(atob(token));
+                    const users = JSON.parse(localStorage.getItem('users')) || [];
+                    const user = users.find(u => u.id === userData.userId);
+                    
+                    if (user) {
+                        document.getElementById('navUsername').textContent = user.username;
+                    }
+                } catch (error) {
+                    console.error('Error loading user data:', error);
+                    // Redirect to login if there's an error with the token
+                    window.location.href = 'login.html';
+                }
+            } else {
+                // Redirect to login if no token exists
+                window.location.href = 'login.html';
+            }
+        });
+    </script>
 </body>
 
 </html>

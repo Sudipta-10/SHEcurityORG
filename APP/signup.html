@@ -141,6 +141,7 @@
             }
         }
     </style>
+    <script type="module" src="config/auth.js"></script>
 </head>
 <body>
     <div class="container">
@@ -174,74 +175,117 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import authService, { AUTH_CONFIG } from './config/auth.js';
+        
         const form = document.getElementById('signup-form');
         const username = document.getElementById('username');
         const email = document.getElementById('email');
         const password = document.getElementById('password');
         const confirmPassword = document.getElementById('confirm-password');
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            validateInputs();
+            resetErrors();
+            
+            if (validateInputs()) {
+                try {
+                    const token = await authService.register(
+                        email.value.trim(),
+                        password.value.trim(),
+                        username.value.trim()
+                    );
+                    
+                    // Store the authentication token
+                    localStorage.setItem('authToken', token);
+                    
+                    // Redirect to index page after successful signup
+                    window.location.href = 'index.html';
+                } catch (error) {
+                    setError(email, error.message);
+                }
+            }
         });
 
-        const setError = (element, message) => {
+        function resetErrors() {
+            [username, email, password, confirmPassword].forEach(element => {
+                const errorDisplay = document.getElementById(`${element.id}-error`);
+                errorDisplay.style.display = 'none';
+                element.style.borderColor = '#ddd';
+            });
+        }
+
+        function setError(element, message) {
             const errorDisplay = document.getElementById(`${element.id}-error`);
             errorDisplay.textContent = message;
             errorDisplay.style.display = 'block';
             element.style.borderColor = '#ff3860';
-        };
+        }
 
-        const setSuccess = (element) => {
+        function setSuccess(element) {
             const errorDisplay = document.getElementById(`${element.id}-error`);
             errorDisplay.style.display = 'none';
             element.style.borderColor = '#9c9cff';
-        };
+        }
 
-        const isValidEmail = (email) => {
+        function isValidEmail(email) {
             const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
             return re.test(String(email).toLowerCase());
-        };
+        }
 
-        const validateInputs = () => {
+        function validateInputs() {
+            let isValid = true;
             const usernameValue = username.value.trim();
             const emailValue = email.value.trim();
             const passwordValue = password.value.trim();
             const confirmPasswordValue = confirmPassword.value.trim();
 
+            // Username validation
             if (usernameValue === '') {
                 setError(username, 'Username is required');
+                isValid = false;
             } else if (usernameValue.length < 3) {
                 setError(username, 'Username must be at least 3 characters');
+                isValid = false;
             } else {
                 setSuccess(username);
             }
 
+            // Email validation
             if (emailValue === '') {
                 setError(email, 'Email is required');
+                isValid = false;
             } else if (!isValidEmail(emailValue)) {
                 setError(email, 'Please enter a valid email');
+                isValid = false;
             } else {
                 setSuccess(email);
             }
 
+            // Password validation
             if (passwordValue === '') {
                 setError(password, 'Password is required');
-            } else if (passwordValue.length < 8) {
-                setError(password, 'Password must be at least 8 characters');
+                isValid = false;
+            } else if (!AUTH_CONFIG.passwordRegex.test(passwordValue)) {
+                setError(password, 'Password must contain at least 8 characters, one letter, one number and one special character');
+                isValid = false;
             } else {
                 setSuccess(password);
             }
 
+            // Confirm password validation
             if (confirmPasswordValue === '') {
                 setError(confirmPassword, 'Please confirm your password');
+                isValid = false;
             } else if (confirmPasswordValue !== passwordValue) {
                 setError(confirmPassword, 'Passwords do not match');
+                isValid = false;
             } else {
                 setSuccess(confirmPassword);
             }
-        };
+
+            return isValid;
+        }
     </script>
 </body>
 </html>
